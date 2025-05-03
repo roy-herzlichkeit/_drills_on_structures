@@ -1,4 +1,4 @@
-CC1 = file.c
+CC = file.c
 all:
 	gcc $(CC)
 	./a.exe
