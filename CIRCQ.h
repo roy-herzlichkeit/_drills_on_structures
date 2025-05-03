@@ -7,7 +7,7 @@
 
 #define MAX_SIZE 4
 
-typedef struct queue_structure {
+typedef struct circular_queue_structure {
     int FRONT;
     int REAR;
     int SIZE;

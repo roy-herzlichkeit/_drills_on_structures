@@ -5,5 +5,5 @@ all:
 	rm -f a.exe
 gitify:
 	git add .
-	git commit -m "commit-V"
+	git commit -m "commit-VI"
 	git push -u origin main
