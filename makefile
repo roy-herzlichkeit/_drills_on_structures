@@ -1,4 +1,4 @@
-CC = file.c
+CC = tester.c
 all:
 	gcc $(CC)
 	./a.exe
