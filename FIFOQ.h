@@ -17,7 +17,7 @@ typedef struct queue_structure {
 void init(queue *q) {
     q->FRONT = q->REAR = 0;
     q->SIZE = 0;
-    q->items = calloc(MAX_SIZE, sizeof(int));
+    q->items = (int *)calloc(MAX_SIZE, sizeof(int));
     if (!q->items) {
         perror("calloc failed");
         exit(EXIT_FAILURE);
