@@ -21,6 +21,8 @@ void delete_rear(node**);
 void delete_node(node**, int);
 void view(node *);
 void destroy(node **);
+node* read_file(char*);
+void write_file(char*, node*);
 
 node* create_node(int value) {
     node *nptr = (node*)malloc(sizeof *nptr);
@@ -145,6 +147,36 @@ void destroy(node **ptr) {
         *ptr = tmp;
     }
     *ptr = NULL;
+}
+
+node* read_file(char *source) {
+    FILE *fps = fopen(source, "r");
+    if (!fps) {
+        fprintf(stderr, "Error opening file %s\n", source);
+        return NULL;
+    }
+    node *dummy = create_node(0), *tail = dummy;
+    int num;
+    while (fscanf(fps, "%d", &num) == 1) {
+        node *nptr = create_node(num);
+        tail->next = nptr;
+        tail = tail->next;
+    }
+    fclose(fps);
+    node *head = dummy->next;
+    free(dummy);
+    return head;
+}
+
+void write_file(char *dest, node *head) {
+    FILE *fps = fopen(dest, "w");
+    if (!fps) {
+        fprintf(stderr, "Error opening file %s\n", dest);
+        return;
+    }
+    for (node *it = head; it; it = it->next)
+        fprintf(fps, "%d ", it->val);
+    fclose(fps);
 }
 
 #endif
