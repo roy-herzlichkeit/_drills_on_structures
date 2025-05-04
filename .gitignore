@@ -1,2 +1,5 @@
 tester.c
-makeflie
+Makefile
+.vscode/
+input.txt
+output.txt

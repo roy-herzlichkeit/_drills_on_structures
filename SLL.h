@@ -23,6 +23,7 @@ void view(node *);
 void destroy(node **);
 node* read_file(char*);
 void write_file(char*, node*);
+node* reverse(node *);
 
 node* create_node(int value) {
     node *nptr = (node*)malloc(sizeof *nptr);
@@ -177,6 +178,23 @@ void write_file(char *dest, node *head) {
     for (node *it = head; it; it = it->next)
         fprintf(fps, "%d ", it->val);
     fclose(fps);
+}
+
+node* reverse(node *head) {
+    node* prev, *curr, *next;
+    prev = NULL;
+    if (head != NULL) 
+        curr = head;
+    else    
+        return head;
+    while (curr != NULL) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    head = curr;
+    return prev;
 }
 
 #endif
