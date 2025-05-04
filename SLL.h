@@ -16,9 +16,9 @@ void insert_front(node**, int);
 void insert_rear(node**, int);
 void insert_after(node*, int, int);
 void insert_before(node**, int, int);
-void delete_front(node**);
-void delete_rear(node**);
-void delete_node(node**, int);
+int delete_front(node**);
+int delete_rear(node**);
+int delete_node(node**, int);
 void view(node *);
 void destroy(node **);
 node* read_file(char*);
@@ -86,37 +86,44 @@ void insert_before(node **ptr, int value, int location) {
     }
 }
 
-void delete_front(node **ptr) {
+int delete_front(node **ptr) {
     if (!*ptr)
-        return;
+        return INT_MAX;
     node *nptr = *ptr;
+    int temp = (*ptr)->val;
     *ptr = (*ptr)->next;
     nptr->next = NULL;
     destroy(&nptr);
+    return temp;
 }
 
-void delete_rear(node **ptr) {
+int delete_rear(node **ptr) {
     if (!*ptr)
-        return;
+        return INT_MAX;
+    int temp;
     if ((*ptr)->next == NULL) {
+        temp = (*ptr)->val;
         destroy(ptr);
-        return;
+        return temp;
     }
     node *prev = NULL, *it = *ptr;
     while (it->next != NULL) {
         prev = it;
         it = it->next;
     }
+    temp = it->val;
     prev->next = NULL;
     destroy(&it);
+    return temp;
 }
 
-void delete_node(node **ptr, int value) {
+int delete_node(node **ptr, int value) {
     if (!*ptr)
-        return;
+        return INT_MAX;
+    int temp = INT_MAX;
     if ((*ptr)->val == value) {
         delete_front(ptr);
-        return;
+        return value;
     }
     node *rear = NULL, *it = *ptr, *front = it->next;
     while (it->val != value && front != NULL) {
@@ -125,12 +132,15 @@ void delete_node(node **ptr, int value) {
         front = front->next;
     }
     if (front == NULL && it->val == value) {
+        temp = value;
         delete_rear(ptr);
     } else if (it->val == value) {
+        temp = value;
         rear->next = front;
         it->next = NULL;
         destroy(&it);
     }
+    return temp;
 }
 
 void view(node *ptr) {
