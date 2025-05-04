@@ -1,4 +1,4 @@
-#include "stack.h"
+#include "STACK.h"
 
 void enqueue(stack *s, int value) {
     push(s, value);

@@ -1,4 +1,4 @@
-#include "stack.h"
+#include "STACK.h"
 #include <math.h>
 
 int main()
