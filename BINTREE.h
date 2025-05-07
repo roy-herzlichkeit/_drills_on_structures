@@ -19,6 +19,7 @@ node* read(char*);
 void write(char*, node*);
 node* make_phi(char*, char*);
 node* make_psi(char*, char*);
+void destroy(node**);
 
 static void inorder_print(node *root, FILE *fps);
 static void preorder_print(node *root, FILE *fps);
@@ -162,6 +163,14 @@ node* make_psi(char* s_in, char* s_post) {
     int n = 0;
     while (s_post[n]) ++n;
     return build_tree_psi(s_in, 0, n - 1, s_post, 0, n - 1);
+}
+
+void destroy(node **root) {
+    if (!root || !*root) return;
+    destroy(&(*root)->left);
+    destroy(&(*root)->right);
+    free(*root);
+    *root = NULL;
 }
 
 #endif
