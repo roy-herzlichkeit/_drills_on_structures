@@ -20,6 +20,10 @@ void write(char*, node*);
 node* make_phi(char*, char*);
 node* make_psi(char*, char*);
 
+static void inorder_print(node *root, FILE *fps);
+static void preorder_print(node *root, FILE *fps);
+static void postorder_print(node *root, FILE *fps);
+
 node* create_node(int val) {
     node* nptr = (node*)malloc(sizeof(node));
     if (!nptr) return NULL;
@@ -52,22 +56,32 @@ void postorder(node* root, char* s, int i) {
 void write(char *dest, node *root) {
     FILE *fps = fopen(dest, "w");
     if (!fps) return;
-    char *s_in = (char*)calloc(128, 1);
-    char *s_pre = (char*)calloc(128, 1);
-    char *s_post = (char*)calloc(128, 1);
-    inorder(root, s_in, 0);
-    preorder(root, s_pre, 0);
-    postorder(root, s_post, 0);
-    for (int i = 0; s_in[i] != '\0'; i++) fprintf(fps, "%d ", s_in[i]);
+    inorder_print(root, fps);
     fprintf(fps, "\n");
-    for (int i = 0; s_pre[i] != '\0'; i++) fprintf(fps, "%d ", s_pre[i]);
+    preorder_print(root, fps);
     fprintf(fps, "\n");
-    for (int i = 0; s_post[i] != '\0'; i++) fprintf(fps, "%d ", s_post[i]);
+    postorder_print(root, fps);
     fprintf(fps, "\n");
     fclose(fps);
-    free(s_in);
-    free(s_pre);
-    free(s_post);
+}
+
+static void inorder_print(node *root, FILE *fps) {
+    if (!root) return;
+    inorder_print(root->left, fps);
+    fprintf(fps, "%d ", root->val);
+    inorder_print(root->right, fps);
+}
+static void preorder_print(node *root, FILE *fps) {
+    if (!root) return;
+    fprintf(fps, "%d ", root->val);
+    preorder_print(root->left, fps);
+    preorder_print(root->right, fps);
+}
+static void postorder_print(node *root, FILE *fps) {
+    if (!root) return;
+    postorder_print(root->left, fps);
+    postorder_print(root->right, fps);
+    fprintf(fps, "%d ", root->val);
 }
 
 node* read(char *src) {
@@ -79,6 +93,25 @@ node* read(char *src) {
     fscanf(fps, "%d\n", &num);
     fgets(s1, 100, fps);
     fgets(s2, 100, fps);
+    {
+        char *p = s1, *w = s1;
+        int val, nch;
+        while (sscanf(p, "%d%n", &val, &nch) == 1) {
+            *w++ = (char)val;
+            p += nch;
+        }
+        *w = '\0';
+    }
+    {
+        char *p = s2, *w = s2;
+        int val, nch;
+        while (sscanf(p, "%d%n", &val, &nch) == 1) {
+            *w++ = (char)val;
+            p += nch;
+        }
+        *w = '\0';
+    }
+
     node *res = num == 0 ? make_phi(s1, s2) : make_psi(s1, s2);
     fclose(fps);
     free(s1);
